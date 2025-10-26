@@ -1,11 +1,9 @@
 ---
-# GHA workflow to run Static Analysis and submit results to GitHub Code Scanning Alerts
 name: "Analysis"
 
 on:
   push:
-    branches:
-    - main
+    branches: [ main ]
     paths:
       - '**.cpp'
       - '**.h'
@@ -24,7 +22,6 @@ jobs:
   core:
     name: CppCoreCheckRules
     runs-on: windows-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -34,34 +31,40 @@ jobs:
 
       - name: Run MSVC Code Analysis
         uses: microsoft/msvc-code-analysis-action@v0.1.1
-        # Provide a unique ID to access the sarif output path
         id: run-core-analysis
         with:
           cmakeBuildDirectory: ${{ env.build }}
           buildConfiguration: ${{ env.config }}
-          # Ruleset file that will determine what checks will be run
           ruleset: CppCoreCheckRules.ruleset
-          # Paths to ignore analysis of CMake targets and includes
           ignoredPaths: ${{ github.workspace }}/test/catch
 
-      # Upload SARIF file to GitHub Code Scanning Alerts
       - name: Upload SARIF to GitHub
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: ${{ steps.run-core-analysis.outputs.sarif }}
 
-      # Upload SARIF file as an Artifact to download and view
       - name: Upload SARIF as an Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: sarif-file
+          name: sarif-core
           path: ${{ steps.run-core-analysis.outputs.sarif }}
           overwrite: true
+
+      - name: Upload MSVC build outputs (artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: analysis-core-build-windows
+          path: |
+            ${{ env.build }}/**/*.lib
+            ${{ env.build }}/**/*.dll
+            ${{ env.build }}/**/*.pdb
+            ${{ env.build }}/**/*.exe
+          if-no-files-found: warn
+          retention-days: 14
 
   native:
     name: NativeRecommendedRules
     runs-on: windows-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -71,29 +74,36 @@ jobs:
 
       - name: Run MSVC Code Analysis
         uses: microsoft/msvc-code-analysis-action@v0.1.1
-        # Provide a unique ID to access the sarif output path
         id: run-native-analysis
         with:
           cmakeBuildDirectory: ${{ env.build }}
           buildConfiguration: ${{ env.config }}
-          # Ruleset file that will determine what checks will be run
           ruleset: NativeRecommendedRules.ruleset
-          # Paths to ignore analysis of CMake targets and includes
           ignoredPaths: ${{ github.workspace }}/test/catch
 
-      # Upload SARIF file to GitHub Code Scanning Alerts
       - name: Upload SARIF to GitHub
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: ${{ steps.run-native-analysis.outputs.sarif }}
 
-      # Upload SARIF file as an Artifact to download and view
       - name: Upload SARIF as an Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: sarif-file
+          name: sarif-native
           path: ${{ steps.run-native-analysis.outputs.sarif }}
           overwrite: true
+
+      - name: Upload MSVC build outputs (artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: analysis-native-build-windows
+          path: |
+            ${{ env.build }}/**/*.lib
+            ${{ env.build }}/**/*.dll
+            ${{ env.build }}/**/*.pdb
+            ${{ env.build }}/**/*.exe
+          if-no-files-found: warn
+          retention-days: 14
 
   flawfinder:
     name: Flawfinder

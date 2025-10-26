@@ -1,0 +1,194 @@
+name: Main Workflow
+
+on:
+  push:
+    branches: [ main, master, develop, 'releases/**' ]
+    paths-ignore:
+      - 'compile_commands/**'   # prevent CI loop when committing compile_commands.json
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sonarqube:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}   # cmake/ninja from /mingw64/bin
+
+    env:
+      BUILD_DIR: build
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: false
+
+      - name: Install MSYS2 toolchain
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          msystem: MINGW64
+          install: >-
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-ninja
+            mingw-w64-x86_64-binutils
+            mingw-w64-x86_64-pkgconf
+
+      # Configure nanodbc as a plain library (no examples/tests), export compile_commands.json
+      - name: Configure (Ninja, export compile_commands.json)
+        run: >
+          cmake -S . -B "${BUILD_DIR}" -G Ninja
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+          -DNANODBC_DISABLE_TESTS=ON
+          -DNANODBC_DISABLE_EXAMPLES=ON
+
+      - name: Build
+        run: cmake --build "${BUILD_DIR}" --config Release -j2
+
+      # --- Produce full & stripped bundles for Ghidra ---
+      - name: Package (full + stripped + symbols)
+        run: |
+          set -euo pipefail
+
+          mkdir -p out/full/bin out/full/lib out/full/include
+          mkdir -p out/stripped/bin out/stripped/lib
+          mkdir -p out/symbols
+
+          # Headers (the public headers live under nanodbc/)
+          [ -d nanodbc ] && cp -R nanodbc/ out/full/include/ || true
+          [ -d include ] && cp -R include/ out/full/include/ || true
+
+          # Libraries (static/dynamic)
+          # MinGW names: libnanodbc.a / libnanodbc.dll.a / *.dll
+          find "${BUILD_DIR}" -maxdepth 4 -type f -name 'libnanodbc*.a'  -exec cp -f {} out/full/lib/ \; || true
+          find "${BUILD_DIR}" -maxdepth 4 -type f -name 'nanodbc*.dll'    -exec cp -f {} out/full/lib/ \; || true
+          # If any helper executables are produced, copy them too
+          find "${BUILD_DIR}" -type f \( -iname '*.exe' -o -iname '*.dll' \) -not -path '*/CMakeFiles/*' -exec cp -f {} out/full/bin/ \; || true
+
+          # Stripped copies start from full
+          cp -f out/full/lib/* out/stripped/lib/ 2>/dev/null || true
+          cp -f out/full/bin/* out/stripped/bin/ 2>/dev/null || true
+
+          # Strip static libs (remove DWARF)
+          find out/stripped/lib -type f -name '*.a' -exec strip -g {} \; || true
+
+          # Strip EXE/DLL & create separate .debug files (GNU style)
+          shopt -s nullglob
+          for f in out/stripped/bin/*.exe out/stripped/bin/*.dll out/stripped/lib/*.dll; do
+            base="$(basename "$f")"
+            # Prefer unstripped twin from 'full' to harvest symbols
+            if [ -f "out/full/bin/$base" ]; then
+              objcopy --only-keep-debug "out/full/bin/$base" "out/symbols/$base.debug" || true
+            elif [ -f "out/full/lib/$base" ]; then
+              objcopy --only-keep-debug "out/full/lib/$base" "out/symbols/$base.debug" || true
+            else
+              objcopy --only-keep-debug "$f" "out/symbols/$base.debug" || true
+            fi
+            strip --strip-debug "$f" || true
+            if [ -f "out/symbols/$base.debug" ]; then
+              objcopy --add-gnu-debuglink="out/symbols/$base.debug" "$f" || true
+            fi
+          done
+
+          echo "---- FULL ----";     find out/full     -maxdepth 4 -type f -print || true
+          echo "---- STRIPPED ----"; find out/stripped -maxdepth 4 -type f -print || true
+          echo "---- SYMBOLS ----";  find out/symbols  -maxdepth 4 -type f -print || true
+
+      - name: Upload artifact (full symbols)
+        uses: actions/upload-artifact@v4
+        with:
+          name: nanodbc-full-windows-msys2-Release
+          path: out/full/**
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Upload artifact (stripped)
+        uses: actions/upload-artifact@v4
+        with:
+          name: nanodbc-stripped-windows-msys2-Release
+          path: out/stripped/**
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Upload artifact (separate .debug symbols)
+        uses: actions/upload-artifact@v4
+        with:
+          name: nanodbc-symbols-windows-msys2-Release
+          path: out/symbols/**
+          if-no-files-found: warn
+          retention-days: 30
+
+      # --- Auto-commit compile_commands.json (non-fatal if unchanged) ---
+      - name: Commit compile_commands.json into repo
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/')
+        shell: pwsh
+        env:
+          TARGET_DIR: compile_commands/windows-msys2
+          BUILD_DIR: ${{ env.BUILD_DIR }}
+        run: |
+          $ErrorActionPreference = "Stop"
+
+          $src = Join-Path $env:GITHUB_WORKSPACE "$env:BUILD_DIR\compile_commands.json"
+          if (!(Test-Path $src)) {
+            Write-Host "compile_commands.json not found at $src"
+            exit 0
+          }
+
+          $outDir = Join-Path $env:GITHUB_WORKSPACE $env:TARGET_DIR
+          New-Item -ItemType Directory -Force -Path $outDir | Out-Null
+          Copy-Item $src (Join-Path $outDir 'compile_commands.json') -Force
+
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config --global --add safe.directory $env:GITHUB_WORKSPACE
+
+          git add "$env:TARGET_DIR/compile_commands.json"
+
+          git diff --cached --quiet
+          if ($LASTEXITCODE -ne 0) {
+            git commit -m "[skip ci] update compile_commands.json ($env:TARGET_DIR)"
+            git push
+          } else {
+            Write-Host "No changes in compile_commands.json; nothing to commit."
+          }
+
+          exit 0
+
+      # Read org/key from sonar-project.properties to avoid empty --define values
+      - name: Load Sonar org/key from sonar-project.properties
+        if: env.SONAR_ORGANIZATION == '' || env.SONAR_PROJECT_KEY == ''
+        shell: pwsh
+        run: |
+          $propsPath = Join-Path $env:GITHUB_WORKSPACE 'sonar-project.properties'
+          if (!(Test-Path $propsPath)) { Write-Error "sonar-project.properties not found at $propsPath"; exit 1 }
+
+          $lines = Get-Content $propsPath | Where-Object { $_ -notmatch '^\s*#' }
+          $org = ($lines | Where-Object { $_ -match '^\s*sonar\.organization\s*=' } | ForEach-Object { ($_ -split '=',2)[1].Trim() })[0]
+          $key = ($lines | Where-Object { $_ -match '^\s*sonar\.projectKey\s*=' } | ForEach-Object { ($_ -split '=',2)[1].Trim() })[0]
+
+          if (-not $org) { Write-Error "sonar.organization is missing in sonar-project.properties"; exit 1 }
+          if (-not $key) { Write-Error "sonar.projectKey is missing in sonar-project.properties"; exit 1 }
+
+          "SONAR_ORGANIZATION=$org" | Out-File -FilePath $env:GITHUB_ENV -Append
+          "SONAR_PROJECT_KEY=$key"  | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
+          SONAR_ORGANIZATION: ${{ env.SONAR_ORGANIZATION }}
+          SONAR_PROJECT_KEY: ${{ env.SONAR_PROJECT_KEY }}
+        with:
+          args: >
+            --define sonar.sources=.
+            --define sonar.exclusions=**/.scannerwork/**,**/build/**,**/scripts/**,**/cmake-build-**/**
+            --define sonar.cfamily.compile-commands=build/compile_commands.json
+            --define sonar.verbose=true
