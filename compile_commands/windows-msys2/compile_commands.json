@@ -1,0 +1,110 @@
+[
+{
+  "directory": "D:/a/nanodbc/nanodbc/build",
+  "command": "D:\\a\\_temp\\msys64\\mingw64\\bin\\c++.exe -ID:/a/nanodbc/nanodbc -O3 -DNDEBUG -std=c++14 -o CMakeFiles\\nanodbc.dir\\nanodbc\\nanodbc.cpp.obj -c D:\\a\\nanodbc\\nanodbc\\nanodbc\\nanodbc.cpp",
+  "file": "D:/a/nanodbc/nanodbc/nanodbc/nanodbc.cpp",
+  "output": "D:/a/nanodbc/nanodbc/build/CMakeFiles/nanodbc.dir/nanodbc/nanodbc.cpp.obj"
+},
+{
+  "directory": "D:/a/nanodbc/nanodbc/build",
+  "command": "D:\\a\\_temp\\msys64\\mingw64\\bin\\c++.exe -DNANODBC_TEST_CI=1 -ID:/a/nanodbc/nanodbc -O3 -DNDEBUG -std=c++14 -o test\\CMakeFiles\\utility_tests.dir\\utility_test.cpp.obj -c D:\\a\\nanodbc\\nanodbc\\test\\utility_test.cpp",
+  "file": "D:/a/nanodbc/nanodbc/test/utility_test.cpp",
+  "output": "D:/a/nanodbc/nanodbc/build/test/CMakeFiles/utility_tests.dir/utility_test.cpp.obj"
+},
+{
+  "directory": "D:/a/nanodbc/nanodbc/build",
+  "command": "D:\\a\\_temp\\msys64\\mingw64\\bin\\c++.exe -DNANODBC_TEST_CI=1 -DNANODBC_TEST_DATA=\\\"D:/a/nanodbc/nanodbc/test/data\\\" -ID:/a/nanodbc/nanodbc -O3 -DNDEBUG -std=c++14 -Wno-unknown-pragmas -Wno-error=parentheses -o test\\CMakeFiles\\mssql_tests.dir\\main.cpp.obj -c D:\\a\\nanodbc\\nanodbc\\test\\main.cpp",
+  "file": "D:/a/nanodbc/nanodbc/test/main.cpp",
+  "output": "D:/a/nanodbc/nanodbc/build/test/CMakeFiles/mssql_tests.dir/main.cpp.obj"
+},
+{
+  "directory": "D:/a/nanodbc/nanodbc/build",
+  "command": "D:\\a\\_temp\\msys64\\mingw64\\bin\\c++.exe -DNANODBC_TEST_CI=1 -DNANODBC_TEST_DATA=\\\"D:/a/nanodbc/nanodbc/test/data\\\" -ID:/a/nanodbc/nanodbc -O3 -DNDEBUG -std=c++14 -Wno-unknown-pragmas -Wno-error=parentheses -o test\\CMakeFiles\\mssql_tests.dir\\mssql_test.cpp.obj -c D:\\a\\nanodbc\\nanodbc\\test\\mssql_test.cpp",
+  "file": "D:/a/nanodbc/nanodbc/test/mssql_test.cpp",
+  "output": "D:/a/nanodbc/nanodbc/build/test/CMakeFiles/mssql_tests.dir/mssql_test.cpp.obj"
+},
+{
+  "directory": "D:/a/nanodbc/nanodbc/build",
+  "command": "D:\\a\\_temp\\msys64\\mingw64\\bin\\c++.exe -DNANODBC_TEST_CI=1 -DNANODBC_TEST_DATA=\\\"D:/a/nanodbc/nanodbc/test/data\\\" -ID:/a/nanodbc/nanodbc -O3 -DNDEBUG -std=c++14 -Wno-unknown-pragmas -Wno-error=parentheses -o test\\CMakeFiles\\mysql_tests.dir\\main.cpp.obj -c D:\\a\\nanodbc\\nanodbc\\test\\main.cpp",
+  "file": "D:/a/nanodbc/nanodbc/test/main.cpp",
+  "output": "D:/a/nanodbc/nanodbc/build/test/CMakeFiles/mysql_tests.dir/main.cpp.obj"
+},
+{
+  "directory": "D:/a/nanodbc/nanodbc/build",
+  "command": "D:\\a\\_temp\\msys64\\mingw64\\bin\\c++.exe -DNANODBC_TEST_CI=1 -DNANODBC_TEST_DATA=\\\"D:/a/nanodbc/nanodbc/test/data\\\" -ID:/a/nanodbc/nanodbc -O3 -DNDEBUG -std=c++14 -Wno-unknown-pragmas -Wno-error=parentheses -o test\\CMakeFiles\\mysql_tests.dir\\mysql_test.cpp.obj -c D:\\a\\nanodbc\\nanodbc\\test\\mysql_test.cpp",
+  "file": "D:/a/nanodbc/nanodbc/test/mysql_test.cpp",
+  "output": "D:/a/nanodbc/nanodbc/build/test/CMakeFiles/mysql_tests.dir/mysql_test.cpp.obj"
+},
+{
+  "directory": "D:/a/nanodbc/nanodbc/build",
+  "command": "D:\\a\\_temp\\msys64\\mingw64\\bin\\c++.exe -DNANODBC_TEST_CI=1 -DNANODBC_TEST_DATA=\\\"D:/a/nanodbc/nanodbc/test/data\\\" -ID:/a/nanodbc/nanodbc -O3 -DNDEBUG -std=c++14 -Wno-unknown-pragmas -Wno-error=parentheses -o test\\CMakeFiles\\postgresql_tests.dir\\main.cpp.obj -c D:\\a\\nanodbc\\nanodbc\\test\\main.cpp",
+  "file": "D:/a/nanodbc/nanodbc/test/main.cpp",
+  "output": "D:/a/nanodbc/nanodbc/build/test/CMakeFiles/postgresql_tests.dir/main.cpp.obj"
+},
+{
+  "directory": "D:/a/nanodbc/nanodbc/build",
+  "command": "D:\\a\\_temp\\msys64\\mingw64\\bin\\c++.exe -DNANODBC_TEST_CI=1 -DNANODBC_TEST_DATA=\\\"D:/a/nanodbc/nanodbc/test/data\\\" -ID:/a/nanodbc/nanodbc -O3 -DNDEBUG -std=c++14 -Wno-unknown-pragmas -Wno-error=parentheses -o test\\CMakeFiles\\postgresql_tests.dir\\postgresql_test.cpp.obj -c D:\\a\\nanodbc\\nanodbc\\test\\postgresql_test.cpp",
+  "file": "D:/a/nanodbc/nanodbc/test/postgresql_test.cpp",
+  "output": "D:/a/nanodbc/nanodbc/build/test/CMakeFiles/postgresql_tests.dir/postgresql_test.cpp.obj"
+},
+{
+  "directory": "D:/a/nanodbc/nanodbc/build",
+  "command": "D:\\a\\_temp\\msys64\\mingw64\\bin\\c++.exe -DNANODBC_TEST_CI=1 -DNANODBC_TEST_DATA=\\\"D:/a/nanodbc/nanodbc/test/data\\\" -ID:/a/nanodbc/nanodbc -O3 -DNDEBUG -std=c++14 -Wno-unknown-pragmas -Wno-error=parentheses -o test\\CMakeFiles\\sqlite_tests.dir\\main.cpp.obj -c D:\\a\\nanodbc\\nanodbc\\test\\main.cpp",
+  "file": "D:/a/nanodbc/nanodbc/test/main.cpp",
+  "output": "D:/a/nanodbc/nanodbc/build/test/CMakeFiles/sqlite_tests.dir/main.cpp.obj"
+},
+{
+  "directory": "D:/a/nanodbc/nanodbc/build",
+  "command": "D:\\a\\_temp\\msys64\\mingw64\\bin\\c++.exe -DNANODBC_TEST_CI=1 -DNANODBC_TEST_DATA=\\\"D:/a/nanodbc/nanodbc/test/data\\\" -ID:/a/nanodbc/nanodbc -O3 -DNDEBUG -std=c++14 -Wno-unknown-pragmas -Wno-error=parentheses -o test\\CMakeFiles\\sqlite_tests.dir\\sqlite_test.cpp.obj -c D:\\a\\nanodbc\\nanodbc\\test\\sqlite_test.cpp",
+  "file": "D:/a/nanodbc/nanodbc/test/sqlite_test.cpp",
+  "output": "D:/a/nanodbc/nanodbc/build/test/CMakeFiles/sqlite_tests.dir/sqlite_test.cpp.obj"
+},
+{
+  "directory": "D:/a/nanodbc/nanodbc/build",
+  "command": "D:\\a\\_temp\\msys64\\mingw64\\bin\\c++.exe -DNANODBC_TEST_CI=1 -DNANODBC_TEST_DATA=\\\"D:/a/nanodbc/nanodbc/test/data\\\" -ID:/a/nanodbc/nanodbc -O3 -DNDEBUG -std=c++14 -Wno-unknown-pragmas -Wno-error=parentheses -o test\\CMakeFiles\\vertica_tests.dir\\main.cpp.obj -c D:\\a\\nanodbc\\nanodbc\\test\\main.cpp",
+  "file": "D:/a/nanodbc/nanodbc/test/main.cpp",
+  "output": "D:/a/nanodbc/nanodbc/build/test/CMakeFiles/vertica_tests.dir/main.cpp.obj"
+},
+{
+  "directory": "D:/a/nanodbc/nanodbc/build",
+  "command": "D:\\a\\_temp\\msys64\\mingw64\\bin\\c++.exe -DNANODBC_TEST_CI=1 -DNANODBC_TEST_DATA=\\\"D:/a/nanodbc/nanodbc/test/data\\\" -ID:/a/nanodbc/nanodbc -O3 -DNDEBUG -std=c++14 -Wno-unknown-pragmas -Wno-error=parentheses -o test\\CMakeFiles\\vertica_tests.dir\\vertica_test.cpp.obj -c D:\\a\\nanodbc\\nanodbc\\test\\vertica_test.cpp",
+  "file": "D:/a/nanodbc/nanodbc/test/vertica_test.cpp",
+  "output": "D:/a/nanodbc/nanodbc/build/test/CMakeFiles/vertica_tests.dir/vertica_test.cpp.obj"
+},
+{
+  "directory": "D:/a/nanodbc/nanodbc/build",
+  "command": "D:\\a\\_temp\\msys64\\mingw64\\bin\\c++.exe -ID:/a/nanodbc/nanodbc -O3 -DNDEBUG -std=c++14 -o example\\CMakeFiles\\example_empty.dir\\empty.cpp.obj -c D:\\a\\nanodbc\\nanodbc\\example\\empty.cpp",
+  "file": "D:/a/nanodbc/nanodbc/example/empty.cpp",
+  "output": "D:/a/nanodbc/nanodbc/build/example/CMakeFiles/example_empty.dir/empty.cpp.obj"
+},
+{
+  "directory": "D:/a/nanodbc/nanodbc/build",
+  "command": "D:\\a\\_temp\\msys64\\mingw64\\bin\\c++.exe -ID:/a/nanodbc/nanodbc -O3 -DNDEBUG -std=c++14 -o example\\CMakeFiles\\example_northwind.dir\\northwind.cpp.obj -c D:\\a\\nanodbc\\nanodbc\\example\\northwind.cpp",
+  "file": "D:/a/nanodbc/nanodbc/example/northwind.cpp",
+  "output": "D:/a/nanodbc/nanodbc/build/example/CMakeFiles/example_northwind.dir/northwind.cpp.obj"
+},
+{
+  "directory": "D:/a/nanodbc/nanodbc/build",
+  "command": "D:\\a\\_temp\\msys64\\mingw64\\bin\\c++.exe -ID:/a/nanodbc/nanodbc -O3 -DNDEBUG -std=c++14 -o example\\CMakeFiles\\example_usage.dir\\usage.cpp.obj -c D:\\a\\nanodbc\\nanodbc\\example\\usage.cpp",
+  "file": "D:/a/nanodbc/nanodbc/example/usage.cpp",
+  "output": "D:/a/nanodbc/nanodbc/build/example/CMakeFiles/example_usage.dir/usage.cpp.obj"
+},
+{
+  "directory": "D:/a/nanodbc/nanodbc/build",
+  "command": "D:\\a\\_temp\\msys64\\mingw64\\bin\\c++.exe -ID:/a/nanodbc/nanodbc -O3 -DNDEBUG -std=c++14 -o example\\CMakeFiles\\example_rowset_iteration.dir\\rowset_iteration.cpp.obj -c D:\\a\\nanodbc\\nanodbc\\example\\rowset_iteration.cpp",
+  "file": "D:/a/nanodbc/nanodbc/example/rowset_iteration.cpp",
+  "output": "D:/a/nanodbc/nanodbc/build/example/CMakeFiles/example_rowset_iteration.dir/rowset_iteration.cpp.obj"
+},
+{
+  "directory": "D:/a/nanodbc/nanodbc/build",
+  "command": "D:\\a\\_temp\\msys64\\mingw64\\bin\\c++.exe -ID:/a/nanodbc/nanodbc -O3 -DNDEBUG -std=c++14 -o example\\CMakeFiles\\example_table_schema.dir\\table_schema.cpp.obj -c D:\\a\\nanodbc\\nanodbc\\example\\table_schema.cpp",
+  "file": "D:/a/nanodbc/nanodbc/example/table_schema.cpp",
+  "output": "D:/a/nanodbc/nanodbc/build/example/CMakeFiles/example_table_schema.dir/table_schema.cpp.obj"
+},
+{
+  "directory": "D:/a/nanodbc/nanodbc/build",
+  "command": "D:\\a\\_temp\\msys64\\mingw64\\bin\\c++.exe -ID:/a/nanodbc/nanodbc -O3 -DNDEBUG -std=c++14 -o example\\CMakeFiles\\example_table_valued_parameter.dir\\table_valued_parameter.cpp.obj -c D:\\a\\nanodbc\\nanodbc\\example\\table_valued_parameter.cpp",
+  "file": "D:/a/nanodbc/nanodbc/example/table_valued_parameter.cpp",
+  "output": "D:/a/nanodbc/nanodbc/build/example/CMakeFiles/example_table_valued_parameter.dir/table_valued_parameter.cpp.obj"
+}
+]
